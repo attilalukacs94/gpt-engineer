@@ -1,1 +1,31 @@
-Build a simple markdown editor using HTML, CSS, and JavaScript. Allow users to input markdown text and display the formatted output in real-time.
+```javascript
+// Assuming you have a textarea with id="editor" for input and a div with id="preview" for output
+let editor = document.getElementById('editor');
+let preview = document.getElementById('preview');
+
+// Use a debounce function to optimize performance
+function debounce(func, wait) {
+    let timeout;
+    return function() {
+        let context = this, args = arguments;
+        let later = function() {
+            timeout = null;
+            func.apply(context, args);
+        };
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+    };
+};
+
+// Use marked library to convert markdown to HTML
+let renderMarkdown = debounce(function() {
+    let markdownText = editor.value;
+    preview.innerHTML = marked(markdownText);
+}, 250);
+
+// Listen for input event
+editor.addEventListener('input', renderMarkdown);
+
+// Initial render
+renderMarkdown();
+```

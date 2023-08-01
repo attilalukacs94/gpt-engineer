@@ -1,1 +1,49 @@
-Create a basic file explorer CLI tool in Python that allows users to navigate through directories, view file contents, and perform basic file operations (copy, move, delete).
+```python
+import os
+import shutil
+
+class FileExplorer:
+    def __init__(self, directory=os.getcwd()):
+        self.current_directory = directory
+
+    def list_files(self):
+        return os.listdir(self.current_directory)
+
+    def change_directory(self, directory):
+        os.chdir(directory)
+        self.current_directory = directory
+
+    def view_file(self, file):
+        with open(file, 'r') as f:
+            print(f.read())
+
+    def copy_file(self, source, destination):
+        shutil.copy2(source, destination)
+
+    def move_file(self, source, destination):
+        shutil.move(source, destination)
+
+    def delete_file(self, file):
+        os.remove(file)
+
+# Create an instance of FileExplorer
+explorer = FileExplorer()
+
+# List files in the current directory
+print(explorer.list_files())
+
+# Change directory
+explorer.change_directory('/path/to/directory')
+
+# View file contents
+explorer.view_file('file.txt')
+
+# Copy file
+explorer.copy_file('source.txt', 'destination.txt')
+
+# Move file
+explorer.move_file('source.txt', 'destination.txt')
+
+# Delete file
+explorer.delete_file('file.txt')
+```

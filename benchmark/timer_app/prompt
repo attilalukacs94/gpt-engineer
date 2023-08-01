@@ -1,1 +1,38 @@
-Create a simple timer app using HTML, CSS, and JavaScript that allows users to set a countdown timer and receive an alert when the time is up.
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Timer App</title>
+    <style>
+        body {
+            text-align: center;
+            padding: 10%;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+    </style>
+</head>
+<body>
+    <h2>Countdown Timer</h2>
+    <input type="number" id="time" min="1" placeholder="Enter time in seconds">
+    <button onclick="startTimer()">Start</button>
+    <h1 id="timer"></h1>
+    <script>
+        function startTimer() {
+            var time = document.getElementById('time').value;
+            if(time == "" || time <= 0){
+                alert("Please enter a valid time in seconds.");
+                return;
+            }
+            var timer = document.getElementById('timer');
+            timer.innerHTML = time;
+            var myTimer = setInterval(function () {
+                time--;
+                timer.innerHTML = time;
+                if (time <= 0) {
+                    clearInterval(myTimer);
+                    alert("Time's up!");
+                }
+            }, 1000);
+        }
+    </script>
+</body>
+</html>

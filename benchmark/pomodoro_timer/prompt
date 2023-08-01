@@ -1,1 +1,56 @@
-Develop a Pomodoro timer app using HTML, CSS, and JavaScript. Allow users to set work and break intervals and receive notifications when it's time to switch.
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Pomodoro Timer</title>
+    <style>
+        body {
+            text-align: center;
+            background-color: #f5f5f5;
+        }
+        #timer {
+            font-size: 60px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Pomodoro Timer</h1>
+    <div id="timer">25:00</div>
+    <button id="start">Start</button>
+    <button id="stop">Stop</button>
+    <script>
+        let workTime = 25;
+        let breakTime = 5;
+        let currentTime = workTime * 60;
+        let isBreak = false;
+        let timer;
+
+        const timerElement = document.getElementById('timer');
+        const startButton = document.getElementById('start');
+        const stopButton = document.getElementById('stop');
+
+        function updateTimer() {
+            const minutes = Math.floor(currentTime / 60);
+            let seconds = currentTime % 60;
+
+            seconds = seconds < 10 ? '0' + seconds : seconds;
+
+            timerElement.textContent = `${minutes}:${seconds}`;
+            currentTime--;
+
+            if (currentTime < 0) {
+                isBreak = !isBreak;
+                currentTime = (isBreak ? breakTime : workTime) * 60;
+            }
+        }
+
+        startButton.addEventListener('click', () => {
+            clearInterval(timer);
+            timer = setInterval(updateTimer, 1000);
+        });
+
+        stopButton.addEventListener('click', () => {
+            clearInterval(timer);
+        });
+    </script>
+</body>
+</html>
