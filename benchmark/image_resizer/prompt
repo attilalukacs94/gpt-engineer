@@ -1,1 +1,29 @@
-Create a CLI tool in Python that allows users to resize images by specifying the desired width and height. Use the Pillow library for image manipulation.
+```python
+import argparse
+from PIL import Image
+
+def resize_image(input_image_path, output_image_path, size):
+    original_image = Image.open(input_image_path)
+    width, height = original_image.size
+    print(f"The original image size is {width} wide x {height} tall")
+
+    resized_image = original_image.resize(size)
+    width, height = resized_image.size
+    print(f"The resized image size is {width} wide x {height} tall")
+    resized_image.show()
+    resized_image.save(output_image_path)
+
+def main():
+    parser = argparse.ArgumentParser(description='Resize an image.')
+    parser.add_argument('input_image_path', help='The path of the image to resize.')
+    parser.add_argument('output_image_path', help='The path of the resized image.')
+    parser.add_argument('--width', type=int, help='The desired width of the resized image.')
+    parser.add_argument('--height', type=int, help='The desired height of the resized image.')
+    args = parser.parse_args()
+
+    size = (args.width, args.height)
+    resize_image(args.input_image_path, args.output_image_path, size)
+
+if __name__ == "__main__":
+    main()
+```

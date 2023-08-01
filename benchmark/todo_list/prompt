@@ -1,1 +1,52 @@
-Create a simple to-do list app using HTML, CSS, and JavaScript. Store tasks in local storage and allow users to add, edit, and delete tasks.
+```javascript
+// HTML Structure
+let html = `
+<div id="todo-app">
+  <input type="text" id="task-input" placeholder="Add a task" />
+  <button id="add-task">Add</button>
+  <ul id="task-list"></ul>
+</div>
+`;
+
+document.body.innerHTML = html;
+
+// JavaScript
+let taskInput = document.getElementById('task-input');
+let addTaskButton = document.getElementById('add-task');
+let taskList = document.getElementById('task-list');
+
+// Load tasks from local storage
+let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+
+// Function to render tasks
+let renderTasks = () => {
+  taskList.innerHTML = '';
+  tasks.forEach((task, index) => {
+    let li = document.createElement('li');
+    li.textContent = task;
+    let deleteButton = document.createElement('button');
+    deleteButton.textContent = 'Delete';
+    deleteButton.addEventListener('click', () => {
+      tasks.splice(index, 1);
+      localStorage.setItem('tasks', JSON.stringify(tasks));
+      renderTasks();
+    });
+    li.appendChild(deleteButton);
+    taskList.appendChild(li);
+  });
+};
+
+// Add task
+addTaskButton.addEventListener('click', () => {
+  let task = taskInput.value;
+  if (task) {
+    tasks.push(task);
+    localStorage.setItem('tasks', JSON.stringify(tasks));
+    taskInput.value = '';
+    renderTasks();
+  }
+});
+
+// Initial render
+renderTasks();
+```

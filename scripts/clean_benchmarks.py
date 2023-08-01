@@ -1,11 +1,8 @@
-# list all folders in benchmark folder
-# for each folder, run the benchmark
-
+```python
 import os
 import shutil
 
 from pathlib import Path
-
 from typer import run
 
 
@@ -30,3 +27,4 @@ def main():
 
 if __name__ == "__main__":
     run(main)
+```

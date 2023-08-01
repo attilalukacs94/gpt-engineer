@@ -1,1 +1,26 @@
-Create a URL shortener app using HTML, CSS, JavaScript, and a backend language like Python or Node.js. Allow users to input a long URL and generate a shortened version that redirects to the original URL. Store the shortened URLs in a database.
+from flask import Flask, request, redirect, render_template
+from sqlite3 import connect
+
+app = Flask(__name__)
+
+@app.route('/', methods=['GET', 'POST'])
+def home():
+    if request.method == 'POST':
+        url = request.form['url']
+        with connect('urls.db') as conn:
+            cursor = conn.cursor()
+            cursor.execute('INSERT INTO urls (url) VALUES (?)', (url,))
+            id = cursor.lastrowid
+        return str(id)
+    return render_template('home.html')
+
+@app.route('/<id>')
+def redirect_to_url(id):
+    with connect('urls.db') as conn:
+        url = conn.execute('SELECT url FROM urls WHERE id=?', (id,)).fetchone()[0]
+    return redirect(url)
+
+if __name__ == '__main__':
+    with connect('urls.db') as conn:
+        conn.execute('CREATE TABLE IF NOT EXISTS urls (id INTEGER PRIMARY KEY, url TEXT)')
+    app.run(debug=True)

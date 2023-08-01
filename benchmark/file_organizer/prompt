@@ -1,1 +1,40 @@
-Create a file organizer CLI tool in Python that sorts files in a directory based on their file types (e.g., images, documents, audio) and moves them into corresponding folders.
+```python
+import os
+import shutil
+from collections import defaultdict
+
+def file_organizer(directory):
+    # Define file types
+    file_types = {
+        "images": [".jpg", ".png", ".gif", ".bmp", ".jpeg", ".tiff", ".ico"],
+        "documents": [".doc", ".docx", ".pdf", ".txt", ".xlsx", ".xls", ".ppt", ".pptx"],
+        "audio": [".mp3", ".wav", ".flac", ".m4a", ".aac"]
+    }
+
+    # Create a dictionary to store files by type
+    files_by_type = defaultdict(list)
+
+    # Walk through directory
+    for root, dirs, files in os.walk(directory):
+        for file in files:
+            # Get file extension
+            file_ext = os.path.splitext(file)[1]
+
+            # Check file type and add to corresponding list
+            for file_type, extensions in file_types.items():
+                if file_ext in extensions:
+                    files_by_type[file_type].append(os.path.join(root, file))
+
+    # Move files to corresponding folders
+    for file_type, files in files_by_type.items():
+        # Create directory if not exists
+        if not os.path.exists(os.path.join(directory, file_type)):
+            os.makedirs(os.path.join(directory, file_type))
+
+        # Move files
+        for file in files:
+            shutil.move(file, os.path.join(directory, file_type))
+
+# Call the function
+file_organizer("path_to_your_directory")
+```
